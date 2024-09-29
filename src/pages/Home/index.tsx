@@ -1,9 +1,8 @@
-import preactLogo from "../../assets/preact.svg";
-import iconImg from "../../assets/Icon.jpg";
 import "./style.css";
 import styles from "./home.module.css";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import AppCarousel from "../../components/AppCarousel";
 
 export function Home() {
   return (
@@ -14,11 +13,7 @@ export function Home() {
           <h1>We make apps!</h1>
           <h2>-FBDStudio</h2>
         </div>
-        <div class={styles.appCarouselContainer}>
-          <img src={iconImg} alt="" />
-          <img src={iconImg} alt="" />
-          <img src={iconImg} alt="" />
-        </div>
+        <AppCarousel />
       </main>
       <Footer />
     </div>
