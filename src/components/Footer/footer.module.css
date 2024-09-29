@@ -1,0 +1,9 @@
+.footerContainer {
+  margin-top: auto;
+  padding: 20px 0;
+}
+
+.footerContainer span {
+  color: #afafaf;
+  font-size: 14px;
+}

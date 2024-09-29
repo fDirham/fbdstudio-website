@@ -1,16 +1,20 @@
 import { useLocation } from "preact-iso";
+import style from "./header.module.css";
 
 function Header() {
   const { url } = useLocation();
 
   return (
-    <header>
-      <nav>
-        <a href="/" class={url == "/" && "active"}>
-          Home
+    <header class={style.headerContainer}>
+      <nav class={style.navContainer}>
+        <a href="/" class={style.navButton}>
+          hire us
         </a>
-        <a href="/404" class={url == "/404" && "active"}>
-          404
+        <a href="/" class={style.navLink}>
+          about
+        </a>
+        <a href="/" class={style.navLink}>
+          contact
         </a>
       </nav>
     </header>

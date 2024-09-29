@@ -1,0 +1,22 @@
+.headerContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 20px 40px;
+}
+
+.navContainer {
+  display: flex;
+  flex-direction: row;
+  margin-right: auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.navButton {
+  color: white;
+  background-color: black;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: 600;
+}
