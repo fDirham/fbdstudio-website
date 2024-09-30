@@ -1,8 +1,9 @@
 .componentContainer {
-  width: 640px;
-  height: 240px;
+  width: 660px;
+  height: 350px;
   overflow: visible;
   align-items: center;
+  justify-content: center;
   overflow-x: hidden;
 
   /* mask-image: linear-gradient(
@@ -22,8 +23,10 @@
   align-items: center;
   gap: 0;
   overflow: visible;
+  margin-left: 10px;
 }
 
 .iconContainer img {
   border-radius: 12px;
+  filter: drop-shadow(0 4px 4px rgb(0, 0, 0, 0.25));
 }

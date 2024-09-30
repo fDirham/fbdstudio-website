@@ -61,6 +61,7 @@ export default function AppCarousel() {
       `img:not(:nth-child(${selectedAppIndex + 1}))`,
       {
         scale: 1,
+        marginBottom: 0,
       },
       { duration: scaleDuration }
     );
@@ -69,6 +70,23 @@ export default function AppCarousel() {
       `img:nth-child(${selectedAppIndex + 1})`,
       {
         scale: IMG_BIG_SCALE,
+        marginBottom: 100,
+      },
+      { duration: scaleDuration }
+    );
+
+    animate(
+      `img:nth-child(${leftmostAppIndex})`,
+      {
+        opacity: 0,
+      },
+      { duration: scaleDuration }
+    );
+
+    animate(
+      `img:not(:nth-child(${leftmostAppIndex}))`,
+      {
+        opacity: 1,
       },
       { duration: scaleDuration }
     );
