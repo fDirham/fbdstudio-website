@@ -7,6 +7,7 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"framer-motion": "^11.9.0",
 		"preact": "^10.22.1",
 		"preact-iso": "^2.6.3"
 	},
