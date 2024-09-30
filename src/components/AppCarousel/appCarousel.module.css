@@ -9,7 +9,8 @@
   height: 350px;
   overflow: visible;
   overflow-x: hidden;
-  margin-bottom: -50px;
+  margin-bottom: -40px;
+  margin-top: -20px;
 }
 
 .icons__wrapper {
@@ -35,9 +36,16 @@ MARK: Scroll wheel
   display: flex;
 }
 
+.controls__container button img {
+  width: 20px;
+  height: 20px;
+}
+
 .scrollWheel__container {
   height: 42px;
   overflow-x: hidden;
+  margin: 0 -24px;
+  z-index: -1;
 }
 
 .scrollWheel__wrapper {

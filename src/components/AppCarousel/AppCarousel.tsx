@@ -4,15 +4,19 @@ import focusDuckIcon from "../../assets/focus_duck_icon.jpg";
 import duckBlockIcon from "../../assets/duck_block_icon.png";
 import justFocusIcon from "../../assets/just_focus_icon.png";
 import pixelRocketsIcon from "../../assets/pixel_rockets_icon.jpg";
+import leftButtonIcon from "../../assets/left_button.png";
+import rightButtonIcon from "../../assets/right_button.png";
 import { motion, useAnimate } from "framer-motion";
 
-const CAROUSEL_TIMEOUT_MS = 3000;
+type AppMovementCommand = {
+  leftmostAppIndex: number;
+  isReset: false;
+};
 
 export default function AppCarousel() {
-  const IMG_SIZE = 180;
-  const IMG_BIG_SCALE = 1.2;
-  const IMG_MARGIN = 60;
+  const CAROUSEL_TIMEOUT_MS = 3000;
 
+  // TODO: Make this easier
   const srcList = [
     focusDuckIcon,
     duckBlockIcon,
@@ -24,24 +28,86 @@ export default function AppCarousel() {
     pixelRocketsIcon,
   ];
 
-  const [leftmostAppIndex, setSelectedAppIndex] = useState(0);
-  const selectedAppIndex = leftmostAppIndex + 1;
+  const [leftmostAppIndex, setLeftmostAppIndex] = useState(0);
+  const [manualControl, setManualControl] = useState(false);
   const halfwayIndex = Math.floor(srcList.length / 2);
-
-  const [scope, animate] = useAnimate();
 
   const intervalRef = useRef<ReturnType<typeof setInterval>>(null);
 
   useEffect(() => {
     if (!intervalRef.current) {
       intervalRef.current = setInterval(() => {
-        setSelectedAppIndex((prevIndex) => prevIndex + 1);
+        setManualControl((currManual) => {
+          if (!currManual) {
+            setLeftmostAppIndex((prevIndex) => prevIndex + 1);
+          }
+          return currManual;
+        });
       }, CAROUSEL_TIMEOUT_MS);
     }
     return () => {
       clearInterval(intervalRef.current);
     };
   }, []);
+
+  useEffect(() => {
+    if (leftmostAppIndex == halfwayIndex) {
+      setTimeout(() => {
+        setLeftmostAppIndex(0);
+      }, 1000);
+    }
+  }, [leftmostAppIndex]);
+
+  function handleNext() {
+    if (!manualControl) {
+      setManualControl(true);
+    }
+    setLeftmostAppIndex((e) => {
+      let newVal = e + 1;
+      return newVal;
+    });
+  }
+
+  function handleBack() {
+    if (!manualControl) {
+      setManualControl(true);
+    }
+    setLeftmostAppIndex((e) => {
+      let newVal = e - 1;
+      if (newVal < 0) {
+        newVal = halfwayIndex - 1;
+      }
+      return newVal;
+    });
+  }
+
+  return (
+    <div class={style.componentContainer}>
+      <AppIconCarousel leftmostAppIndex={leftmostAppIndex} srcList={srcList} />
+      <ScrollWheelControls
+        leftmostAppIndex={leftmostAppIndex}
+        numApps={srcList.length}
+        onBack={handleBack}
+        onNext={handleNext}
+      />
+    </div>
+  );
+}
+
+/**
+ * MARK: App icon carousel
+ */
+function AppIconCarousel(props: {
+  leftmostAppIndex: number;
+  srcList: string[];
+}) {
+  const { leftmostAppIndex, srcList } = props;
+  const selectedAppIndex = leftmostAppIndex + 1;
+  const [scope, animate] = useAnimate();
+
+  const IMG_SIZE = 180;
+  const IMG_BIG_SCALE = 1.2;
+  const IMG_MARGIN = 60;
 
   useEffect(() => {
     var scaleDuration = 0.5;
@@ -94,39 +160,26 @@ export default function AppCarousel() {
       },
       { duration: scaleDuration }
     );
-
-    if (leftmostAppIndex == halfwayIndex) {
-      setTimeout(() => {
-        setSelectedAppIndex(0);
-      }, 1000);
-    }
   }, [leftmostAppIndex]);
 
   return (
-    <div class={style.componentContainer}>
-      <div class={style.icons__container}>
-        <div class={style.icons__wrapper} ref={scope}>
-          {srcList.map((src) => {
-            return (
-              <motion.img
-                //@ts-ignore
-                src={src}
-                alt=""
-                style={{
-                  width: IMG_SIZE,
-                  height: IMG_SIZE,
-                  marginRight: IMG_MARGIN,
-                }}
-              ></motion.img>
-            );
-          })}
-        </div>
+    <div class={style.icons__container}>
+      <div class={style.icons__wrapper} ref={scope}>
+        {srcList.map((src) => {
+          return (
+            <motion.img
+              //@ts-ignore
+              src={src}
+              alt=""
+              style={{
+                width: IMG_SIZE,
+                height: IMG_SIZE,
+                marginRight: IMG_MARGIN,
+              }}
+            ></motion.img>
+          );
+        })}
       </div>
-
-      <ScrollWheelControls
-        leftmostAppIndex={leftmostAppIndex}
-        numApps={srcList.length}
-      />
     </div>
   );
 }
@@ -137,8 +190,10 @@ export default function AppCarousel() {
 function ScrollWheelControls(props: {
   leftmostAppIndex: number;
   numApps: number;
+  onNext: () => void;
+  onBack: () => void;
 }) {
-  const { leftmostAppIndex, numApps } = props;
+  const { leftmostAppIndex, numApps, onNext, onBack } = props;
   const numBlocks = numApps + 2;
 
   const BLOCK_COLOR = "#909090";
@@ -245,6 +300,9 @@ function ScrollWheelControls(props: {
 
   return (
     <div class={style.controls__container}>
+      <button onClick={onBack}>
+        <img src={leftButtonIcon} alt="" />
+      </button>
       <div class={style.scrollWheel__container}>
         <div
           class={style.scrollWheel__wrapper}
@@ -256,6 +314,9 @@ function ScrollWheelControls(props: {
           {renderBlocks()}
         </div>
       </div>
+      <button onClick={onNext}>
+        <img src={rightButtonIcon} alt="" />
+      </button>
     </div>
   );
 }
