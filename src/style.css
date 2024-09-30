@@ -3,14 +3,15 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color: #222;
-  background-color: #defffd;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --background-color: #defffd;
+  color: #222;
+  background-color: #defffd;
 }
 
 * {
@@ -21,6 +22,12 @@
 
 a {
   text-decoration: none;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: none;
   color: inherit;
 }
 
