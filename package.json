@@ -9,7 +9,8 @@
 	"dependencies": {
 		"framer-motion": "^11.9.0",
 		"preact": "^10.22.1",
-		"preact-iso": "^2.6.3"
+		"preact-iso": "^2.6.3",
+		"react-timer-hook": "^3.0.7"
 	},
 	"devDependencies": {
 		"@preact/preset-vite": "^2.9.0",
