@@ -8,40 +8,54 @@ import leftButtonIcon from "../../assets/left_button.png";
 import rightButtonIcon from "../../assets/right_button.png";
 import { motion, useAnimate } from "framer-motion";
 
-type AppMovementCommand = {
-  leftmostAppIndex: number;
-  isReset: false;
+type AppInfo = {
+  appName: string;
+  iconSrc: string;
 };
 
 export default function AppCarousel() {
   const CAROUSEL_TIMEOUT_MS = 3000;
 
-  // TODO: Make this easier
-  const srcList = [
-    focusDuckIcon,
-    duckBlockIcon,
-    justFocusIcon,
-    pixelRocketsIcon,
-    focusDuckIcon,
-    duckBlockIcon,
-    justFocusIcon,
-    pixelRocketsIcon,
+  const appInfoArr: AppInfo[] = [
+    { appName: "focusDuckIcon", iconSrc: focusDuckIcon },
+    { appName: "duckBlockIcon", iconSrc: duckBlockIcon },
+    { appName: "justFocusIcon", iconSrc: justFocusIcon },
+    { appName: "pixelRocketsIcon", iconSrc: pixelRocketsIcon },
   ];
 
-  const [leftmostAppIndex, setLeftmostAppIndex] = useState(0);
+  const [chosenAppIndex, setChosenAppIndex] = useState(0);
+  const [autoScrollRight, _setAutoScrollRight] = useState(true); // going right means new apps come from right
+  const autoScrollRightRef = useRef<boolean>(false);
+  function setAutoScrollRight(newVal: boolean) {
+    autoScrollRightRef.current = newVal;
+    _setAutoScrollRight(newVal);
+  }
+
   const [manualControl, setManualControl] = useState(false);
-  const halfwayIndex = Math.floor(srcList.length / 2);
 
   const intervalRef = useRef<ReturnType<typeof setInterval>>(null);
 
   useEffect(() => {
     if (!intervalRef.current) {
       intervalRef.current = setInterval(() => {
-        setManualControl((currManual) => {
-          if (!currManual) {
-            setLeftmostAppIndex((prevIndex) => prevIndex + 1);
+        setChosenAppIndex((curr) => {
+          let newIdx = curr;
+          if (autoScrollRightRef.current) {
+            newIdx += 1;
+          } else {
+            newIdx -= 1;
           }
-          return currManual;
+
+          if (newIdx < 0) {
+            newIdx = 1;
+            setAutoScrollRight(true);
+          }
+          if (newIdx >= appInfoArr.length) {
+            newIdx = appInfoArr.length - 2;
+            setAutoScrollRight(false);
+          }
+
+          return newIdx;
         });
       }, CAROUSEL_TIMEOUT_MS);
     }
@@ -50,46 +64,42 @@ export default function AppCarousel() {
     };
   }, []);
 
-  useEffect(() => {
-    if (leftmostAppIndex == halfwayIndex) {
-      setTimeout(() => {
-        setLeftmostAppIndex(0);
-      }, 1000);
-    }
-  }, [leftmostAppIndex]);
-
   function handleNext() {
-    if (!manualControl) {
-      setManualControl(true);
-    }
-    setLeftmostAppIndex((e) => {
-      let newVal = e + 1;
-      return newVal;
-    });
+    // if (!manualControl) {
+    //   setManualControl(true);
+    // }
+    // setLeftmostAppIndex((e) => {
+    //   let newVal = e + 1;
+    //   return newVal;
+    // });
   }
 
   function handleBack() {
-    if (!manualControl) {
-      setManualControl(true);
-    }
-    setLeftmostAppIndex((e) => {
-      let newVal = e - 1;
-      if (newVal < 0) {
-        newVal = halfwayIndex - 1;
-      }
-      return newVal;
-    });
+    // if (!manualControl) {
+    //   setManualControl(true);
+    // }
+    // setLeftmostAppIndex((e) => {
+    //   let newVal = e - 1;
+    //   if (newVal < 0) {
+    //     newVal = halfwayIndex - 1;
+    //   }
+    //   return newVal;
+    // });
   }
 
   return (
     <div class={style.componentContainer}>
-      <AppIconCarousel leftmostAppIndex={leftmostAppIndex} srcList={srcList} />
-      <ScrollWheelControls
+      <AppIconCarousel
+        appInfoArr={appInfoArr}
+        chosenAppIndex={chosenAppIndex}
+        isDirectionRight={autoScrollRight}
+      />
+      {/* <ScrollWheelControls
         leftmostAppIndex={leftmostAppIndex}
         numApps={srcList.length}
         onBack={handleBack}
         onNext={handleNext}
-      />
+      /> */}
     </div>
   );
 }
@@ -98,11 +108,13 @@ export default function AppCarousel() {
  * MARK: App icon carousel
  */
 function AppIconCarousel(props: {
-  leftmostAppIndex: number;
-  srcList: string[];
+  chosenAppIndex: number;
+  appInfoArr: AppInfo[];
+  isDirectionRight: boolean;
 }) {
-  const { leftmostAppIndex, srcList } = props;
-  const selectedAppIndex = leftmostAppIndex + 1;
+  const { chosenAppIndex, appInfoArr, isDirectionRight } = props;
+  let leftmostAppIndex = chosenAppIndex - 1;
+  let rightmostAppIndex = chosenAppIndex + 1;
   const [scope, animate] = useAnimate();
 
   const IMG_SIZE = 180;
@@ -111,22 +123,20 @@ function AppIconCarousel(props: {
 
   useEffect(() => {
     var scaleDuration = 0.5;
-    if (leftmostAppIndex == 0) {
-      animate("img", { x: 0 }, { duration: 0 });
-      scaleDuration = 0;
-    } else {
-      const moveSpeed = -(IMG_SIZE + IMG_MARGIN);
-      animate(
-        `img`,
-        {
-          x: moveSpeed * leftmostAppIndex,
-        },
-        { ease: "easeInOut", duration: 1 }
-      );
-    }
 
+    // Move
+    const moveSpeed = -(IMG_SIZE + IMG_MARGIN);
     animate(
-      `img:not(:nth-child(${selectedAppIndex + 1}))`,
+      `img`,
+      {
+        x: moveSpeed * leftmostAppIndex,
+      },
+      { ease: "easeInOut", duration: 1 }
+    );
+
+    // Chosen lift up
+    animate(
+      `img:not(:nth-child(${chosenAppIndex + 1}))`,
       {
         scale: 1,
         marginBottom: 0,
@@ -135,7 +145,7 @@ function AppIconCarousel(props: {
     );
 
     animate(
-      `img:nth-child(${selectedAppIndex + 1})`,
+      `img:nth-child(${chosenAppIndex + 1})`,
       {
         scale: IMG_BIG_SCALE,
         marginBottom: 100,
@@ -143,9 +153,17 @@ function AppIconCarousel(props: {
       { duration: scaleDuration }
     );
 
-    if (leftmostAppIndex > 0) {
+    // Hide outgoing
+    let outgoingIndex = 0;
+    if (isDirectionRight) {
+      outgoingIndex = leftmostAppIndex;
+    } else {
+      outgoingIndex = rightmostAppIndex + 2;
+    }
+
+    if (outgoingIndex > 0 && outgoingIndex <= appInfoArr.length) {
       animate(
-        `img:nth-child(${leftmostAppIndex})`,
+        `img:nth-child(${outgoingIndex})`,
         {
           opacity: 0,
         },
@@ -154,22 +172,22 @@ function AppIconCarousel(props: {
     }
 
     animate(
-      `img:not(:nth-child(${leftmostAppIndex}))`,
+      `img:not(:nth-child(${outgoingIndex}))`,
       {
         opacity: 1,
       },
       { duration: scaleDuration }
     );
-  }, [leftmostAppIndex]);
+  }, [chosenAppIndex]);
 
   return (
     <div class={style.icons__container}>
       <div class={style.icons__wrapper} ref={scope}>
-        {srcList.map((src) => {
+        {appInfoArr.map((appInfo) => {
           return (
             <motion.img
               //@ts-ignore
-              src={src}
+              src={appInfo.iconSrc}
               alt=""
               style={{
                 width: IMG_SIZE,
