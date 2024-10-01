@@ -7,11 +7,11 @@ import DetailMode from "../../components/DetailMode";
 import { appInfoArr } from "../../constants";
 
 export function Home() {
-  const [isDetailMode, setIsDetailMode] = useState(false);
+  const [isDetailMode, setIsDetailMode] = useState(true);
   const [chosenAppIndex, setChosenAppIndex] = useState(0);
 
-  function handleShowDetail() {
-    setIsDetailMode(true);
+  function toggleDetailMode() {
+    setIsDetailMode((curr) => !curr);
   }
 
   return (
@@ -23,7 +23,10 @@ export function Home() {
           <h2>-FBDStudio</h2>
         </div>
         {isDetailMode ? (
-          <DetailMode />
+          <DetailMode
+            appInfoArr={appInfoArr}
+            chosenAppIndexState={[chosenAppIndex, setChosenAppIndex]}
+          />
         ) : (
           <AppCarousel
             appInfoArr={appInfoArr}
@@ -34,10 +37,10 @@ export function Home() {
         <div class={styles.showDetail__container}>
           <button
             class={styles.showDetail__button}
-            onClick={handleShowDetail}
+            onClick={toggleDetailMode}
             disabled={false}
           >
-            Show detail
+            {isDetailMode ? "Hide detail" : "Show detail"}
           </button>
         </div>
       </main>

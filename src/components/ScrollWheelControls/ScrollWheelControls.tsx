@@ -30,8 +30,14 @@ export default function ScrollWheelControls(props: ScrollWheelControlsProps) {
 
   const [wheelScope, wheelAnimate] = useAnimate();
   const [isAnimating, setIsAnimating] = useState(false);
+  const [canAnimate, setCanAnimate] = useState(false);
 
   useEffect(() => {
+    if (!canAnimate) {
+      resetBlocks();
+      return;
+    }
+
     setIsAnimating(true);
     if (isDirectionRight) {
       moveRight();
@@ -39,6 +45,10 @@ export default function ScrollWheelControls(props: ScrollWheelControlsProps) {
       moveLeft();
     }
   }, [chosenAppIndex]);
+
+  useEffect(() => {
+    setCanAnimate(true);
+  }, []);
 
   function resetBlocks() {
     // Hide

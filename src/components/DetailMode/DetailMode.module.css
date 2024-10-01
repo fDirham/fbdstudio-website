@@ -1,60 +1,13 @@
 .componentContainer {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   height: 350px;
 }
 
-.icons__container {
-  width: 680px;
-  height: 350px;
-  overflow: visible;
-  overflow-x: hidden;
-  margin-bottom: -40px;
-  margin-top: -20px;
-}
-
-.icons__wrapper {
+.leftSide {
+  display: grid;
+  grid-template-columns: 1;
+  grid-template-rows: 216 auto;
   height: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0;
-  overflow: visible;
-  margin-left: 10px;
-}
-
-.icons__wrapper img {
-  border-radius: 12px;
-  filter: drop-shadow(0 4px 4px rgb(0, 0, 0, 0.25));
-}
-
-/*
-MARK: Scroll wheel
-*/
-
-.controls__container {
-  display: flex;
-}
-
-.controls__container button img {
-  width: 20px;
-  height: 20px;
-}
-
-.scrollWheel__container {
-  height: 42px;
-  overflow-x: hidden;
-  z-index: -1;
-  margin: 0 24px;
-}
-
-.scrollWheel__wrapper {
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0;
-  overflow: visible;
-  margin-left: 5px;
 }
