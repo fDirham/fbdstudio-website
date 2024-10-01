@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
-import style from "./appCarousel.module.css";
+import styles from "./appCarousel.module.css";
 import focusDuckIcon from "../../assets/focus_duck_icon.jpg";
 import duckBlockIcon from "../../assets/duck_block_icon.png";
 import justFocusIcon from "../../assets/just_focus_icon.png";
@@ -7,6 +6,7 @@ import pixelRocketsIcon from "../../assets/pixel_rockets_icon.jpg";
 import leftButtonIcon from "../../assets/left_button.png";
 import rightButtonIcon from "../../assets/right_button.png";
 import { motion, useAnimate } from "framer-motion";
+import { useEffect, useRef, useState } from "preact/hooks";
 
 type AppInfo = {
   appName: string;
@@ -102,7 +102,7 @@ export default function AppCarousel() {
   }
 
   return (
-    <div class={style.componentContainer}>
+    <div class={styles.componentContainer}>
       <AppIconCarousel
         appInfoArr={appInfoArr}
         chosenAppIndex={chosenAppIndex}
@@ -196,8 +196,8 @@ function AppIconCarousel(props: {
   }, [chosenAppIndex]);
 
   return (
-    <div class={style.icons__container}>
-      <div class={style.icons__wrapper} ref={scope}>
+    <div class={styles.icons__container}>
+      <div class={styles.icons__wrapper} ref={scope}>
         {appInfoArr.map((appInfo) => {
           return (
             <motion.img
@@ -242,8 +242,10 @@ function ScrollWheelControls(props: {
   const isLastIndex = chosenAppIndex == appInfoArr.length;
 
   const [wheelScope, wheelAnimate] = useAnimate();
+  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
+    setIsAnimating(true);
     if (isDirectionRight) {
       moveRight();
     } else {
@@ -346,7 +348,14 @@ function ScrollWheelControls(props: {
     wheelAnimate(
       "div",
       { x: moveSpeed },
-      { ease: "easeInOut", duration: 1, onComplete: resetBlocks }
+      {
+        ease: "easeInOut",
+        duration: 1,
+        onComplete: () => {
+          resetBlocks();
+          setIsAnimating(false);
+        },
+      }
     );
   }
 
@@ -385,7 +394,14 @@ function ScrollWheelControls(props: {
     wheelAnimate(
       "div",
       { x: moveSpeed },
-      { ease: "easeInOut", duration: 1, onComplete: resetBlocks }
+      {
+        ease: "easeInOut",
+        duration: 1,
+        onComplete: () => {
+          resetBlocks();
+          setIsAnimating(false);
+        },
+      }
     );
   }
 
@@ -410,16 +426,16 @@ function ScrollWheelControls(props: {
   };
 
   return (
-    <div class={style.controls__container}>
-      <button onClick={onBack} disabled={isFirstIndex}>
+    <div class={styles.controls__container}>
+      <button onClick={onBack} disabled={isFirstIndex || isAnimating}>
         <img src={leftButtonIcon} alt="" />
       </button>
-      <div class={style.scrollWheel__container}>
-        <div class={style.scrollWheel__wrapper} ref={wheelScope}>
+      <div class={styles.scrollWheel__container}>
+        <div class={styles.scrollWheel__wrapper} ref={wheelScope}>
           {renderBlocks()}
         </div>
       </div>
-      <button onClick={onNext} disabled={isLastIndex}>
+      <button onClick={onNext} disabled={isLastIndex || isAnimating}>
         <img src={rightButtonIcon} alt="" />
       </button>
     </div>

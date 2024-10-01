@@ -31,7 +31,7 @@ button {
   color: inherit;
 }
 
-button:not(:disabled) :hover {
+button:not(:disabled) {
   cursor: pointer;
 }
 

@@ -1,5 +1,5 @@
 import { useLocation } from "preact-iso";
-import style from "./header.module.css";
+import styles from "./header.module.css";
 import { useState } from "preact/hooks";
 import hamburgerIcon from "../../assets/hamburger_icon.png";
 import closeIcon from "../../assets/close_icon.png";
@@ -8,8 +8,8 @@ function Header() {
   const { url } = useLocation();
 
   return (
-    <header class={style.headerContainer}>
-      <nav class={style.navContainer}>
+    <header class={styles.headerContainer}>
+      <nav class={styles.navContainer}>
         {desktopHeader()}
         {mobileHeader()}
       </nav>
@@ -19,14 +19,14 @@ function Header() {
 
 function desktopHeader() {
   return (
-    <div class={style["navContent--desktop"]}>
-      <a href="/" class={style.navButton}>
+    <div class={styles["navContent--desktop"]}>
+      <a href="/" class={styles.navButton}>
         hire us
       </a>
-      <a href="/" class={style.navLink}>
+      <a href="/" class={styles.navLink}>
         about
       </a>
-      <a href="/" class={style.navLink}>
+      <a href="/" class={styles.navLink}>
         contact
       </a>
     </div>
@@ -39,32 +39,32 @@ function mobileHeader() {
     _setIsOpen(newVal);
 
     if (newVal) {
-      document.body.style.overflow = "hidden";
+      document.body.styles.overflow = "hidden";
     } else {
-      document.body.style.overflow = "scroll";
+      document.body.styles.overflow = "scroll";
     }
   }
 
   return (
     <>
-      <div class={style["navContent--mobile"]}>
+      <div class={styles["navContent--mobile"]}>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          class={style.mobileMenuButton}
+          class={styles.mobileMenuButton}
         >
           <img src={isOpen ? closeIcon : hamburgerIcon} alt="" />
           {!isOpen && <p>menu</p>}
         </button>
       </div>
       {isOpen && (
-        <div class={style.mobileMenuPopupContainer}>
-          <a href="/" class={style.navLink}>
+        <div class={styles.mobileMenuPopupContainer}>
+          <a href="/" class={styles.navLink}>
             hire us
           </a>
-          <a href="/" class={style.navLink}>
+          <a href="/" class={styles.navLink}>
             about
           </a>
-          <a href="/" class={style.navLink}>
+          <a href="/" class={styles.navLink}>
             contact
           </a>
         </div>
