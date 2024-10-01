@@ -4,20 +4,28 @@ import { useState } from "preact/hooks";
 import hamburgerIcon from "../../assets/hamburger_icon.png";
 import closeIcon from "../../assets/close_icon.png";
 
-function Header() {
+type HeaderProps = {
+  onShowDetailToggle: () => void;
+  isDetailMode: boolean;
+};
+
+function Header(props: HeaderProps) {
   const { url } = useLocation();
 
   return (
     <header class={styles.headerContainer}>
       <nav class={styles.navContainer}>
-        {desktopHeader()}
-        {mobileHeader()}
+        <DesktopHeader />
+        <MobileHeader
+          onShowDetailToggle={props.onShowDetailToggle}
+          isDetailMode={props.isDetailMode}
+        />
       </nav>
     </header>
   );
 }
 
-function desktopHeader() {
+function DesktopHeader() {
   return (
     <div class={styles["navContent--desktop"]}>
       <a href="/" class={styles.navButton}>
@@ -33,15 +41,22 @@ function desktopHeader() {
   );
 }
 
-function mobileHeader() {
+function MobileHeader({
+  onShowDetailToggle,
+  isDetailMode,
+}: {
+  onShowDetailToggle: () => void;
+  isDetailMode: boolean;
+}) {
   const [isOpen, _setIsOpen] = useState<boolean>(false);
+
   function setIsOpen(newVal: boolean) {
     _setIsOpen(newVal);
 
     if (newVal) {
-      document.body.styles.overflow = "hidden";
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.styles.overflow = "scroll";
+      document.body.style.overflow = "scroll";
     }
   }
 
@@ -54,6 +69,12 @@ function mobileHeader() {
         >
           <img src={isOpen ? closeIcon : hamburgerIcon} alt="" />
           {!isOpen && <p>menu</p>}
+        </button>
+        <button
+          onClick={onShowDetailToggle}
+          class={styles.mobileShowDetailButton}
+        >
+          {isDetailMode ? "Hide detail" : "Show detail"}
         </button>
       </div>
       {isOpen && (

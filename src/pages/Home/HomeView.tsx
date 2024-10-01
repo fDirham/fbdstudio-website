@@ -31,7 +31,10 @@ export default function HomeView(props: HomeViewProps) {
 
   return (
     <div class={styles.pageContainer}>
-      <Header />
+      <Header
+        onShowDetailToggle={toggleDetailMode}
+        isDetailMode={isDetailMode}
+      />
       <main>
         {isDetailMode ? (
           <DetailMode

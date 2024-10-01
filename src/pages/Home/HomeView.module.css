@@ -47,14 +47,19 @@
 @media screen and (max-width: 480px) {
   .pageContainer {
     padding-top: 80px;
+    margin-bottom: 54px;
   }
 
   .heroTextContainer h1 {
-    font-size: 32px;
-    line-height: 32px;
+    font-size: 40px;
+    line-height: 60px;
   }
 
   .heroTextContainer h2 {
-    font-size: 18px;
+    font-size: 24px;
+  }
+
+  .showDetail__container {
+    display: none;
   }
 }
