@@ -26,7 +26,7 @@ export default function ScrollWheelControls(props: ScrollWheelControlsProps) {
   const BLOCK_WIDTH = 5;
 
   const isFirstIndex = chosenAppIndex == 0;
-  const isLastIndex = chosenAppIndex == appInfoArr.length;
+  const isLastIndex = chosenAppIndex == appInfoArr.length - 1;
 
   const [wheelScope, wheelAnimate] = useAnimate();
   const [isAnimating, setIsAnimating] = useState(false);
@@ -224,7 +224,16 @@ export default function ScrollWheelControls(props: ScrollWheelControlsProps) {
 
   return (
     <div class={styles.controls__container}>
-      <button onClick={onBack} disabled={isFirstIndex || isAnimating}>
+      <button
+        onClick={() => {
+          setIsAnimating(true);
+          onBack();
+        }}
+        disabled={isFirstIndex || isAnimating}
+        style={{
+          opacity: isFirstIndex || isAnimating ? 0 : 1,
+        }}
+      >
         <img src={leftButtonIcon} alt="" />
       </button>
       <div class={styles.scrollWheel__container}>
@@ -232,7 +241,16 @@ export default function ScrollWheelControls(props: ScrollWheelControlsProps) {
           {renderBlocks()}
         </div>
       </div>
-      <button onClick={onNext} disabled={isLastIndex || isAnimating}>
+      <button
+        onClick={() => {
+          setIsAnimating(true);
+          onNext();
+        }}
+        disabled={isLastIndex || isAnimating}
+        style={{
+          opacity: isLastIndex || isAnimating ? 0 : 1,
+        }}
+      >
         <img src={rightButtonIcon} alt="" />
       </button>
     </div>

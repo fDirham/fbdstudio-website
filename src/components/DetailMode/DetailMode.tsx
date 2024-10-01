@@ -3,6 +3,7 @@ import styles from "./DetailMode.module.css";
 import { motion } from "framer-motion";
 import ScrollWheelControls from "../ScrollWheelControls";
 import { AppInfo } from "../../utilities/customTypes";
+import SingleIconCarousel from "../SingleIconCarousel";
 
 type DetailModeProps = {
   chosenAppIndexState: [number, Dispatch<StateUpdater<number>>];
@@ -26,23 +27,14 @@ export default function DetailMode(props: DetailModeProps) {
   const IMG_SIZE = 320;
   const IMG_MARGIN = 60;
 
-  const renderIconImg = () => {
-    return (
-      <motion.img
-        //@ts-ignore
-        src={chosenApp.iconSrc}
-        alt=""
-        style={{
-          width: IMG_SIZE,
-          height: IMG_SIZE,
-        }}
-      />
-    );
-  };
   return (
     <div class={styles.componentContainer}>
       <div class={styles.leftSide}>
-        {renderIconImg()}
+        <SingleIconCarousel
+          chosenAppIndexState={chosenAppIndexState}
+          appInfoArr={appInfoArr}
+          isScrollDirectionRight={isScrollDirectionRight}
+        />
         <ScrollWheelControls
           appInfoArr={appInfoArr}
           chosenAppIndex={chosenAppIndex}
