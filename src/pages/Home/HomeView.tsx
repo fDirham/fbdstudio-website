@@ -33,23 +33,28 @@ export default function HomeView(props: HomeViewProps) {
     <div class={styles.pageContainer}>
       <Header />
       <main>
-        <div class={styles.heroTextContainer}>
-          <h1>We make apps!</h1>
-          <h2>-FBDStudio</h2>
-        </div>
         {isDetailMode ? (
           <DetailMode
-            appInfoArr={appInfoArr}
-            chosenAppIndexState={chosenAppIndexState}
-          />
-        ) : (
-          <AppCarousel
             appInfoArr={appInfoArr}
             chosenAppIndexState={chosenAppIndexState}
             isScrollDirectionRight={isScrollDirectionRight}
             onBackChosenAppIndex={onBackChosenAppIndex}
             onNextChosenAppIndex={onNextChosenAppIndex}
           />
+        ) : (
+          <>
+            <div class={styles.heroTextContainer}>
+              <h1>We make apps!</h1>
+              <h2>-FBDStudio</h2>
+            </div>
+            <AppCarousel
+              appInfoArr={appInfoArr}
+              chosenAppIndexState={chosenAppIndexState}
+              isScrollDirectionRight={isScrollDirectionRight}
+              onBackChosenAppIndex={onBackChosenAppIndex}
+              onNextChosenAppIndex={onNextChosenAppIndex}
+            />
+          </>
         )}
 
         <div class={styles.showDetail__container}>

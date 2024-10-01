@@ -1,6 +1,7 @@
 .controls__container {
   display: flex;
   align-items: center;
+  width: 236px;
 }
 
 .controls__container button img {
