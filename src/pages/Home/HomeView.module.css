@@ -8,6 +8,10 @@
   padding-top: 70px;
 }
 
+.modeContainer {
+  width: 100%;
+}
+
 .heroTextContainer {
   display: flex;
   flex-direction: column;
@@ -33,6 +37,11 @@
 
   display: flex;
   justify-content: center;
+  position: absolute;
+
+  width: 200px;
+  left: calc(50vw - 100px);
+  bottom: 100px;
 }
 
 .showDetail__button {
