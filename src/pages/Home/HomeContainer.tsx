@@ -28,7 +28,7 @@ export default function HomeContainer() {
     manualControlRef.current = newVal;
     _setManualControl(newVal);
   }
-  const [isDetailMode, setIsDetailMode] = useState(true);
+  const [isDetailMode, setIsDetailMode] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval>>(null);
 
   const CAROUSEL_TIMEOUT_MS = 3000;

@@ -28,3 +28,15 @@
   border-radius: 12px;
   filter: drop-shadow(0 4px 4px rgb(0, 0, 0, 0.25));
 }
+
+@media screen and (max-width: 680px) {
+  .icons__container {
+    width: 100vw;
+  }
+
+  .icons__wrapper {
+    margin-left: calc(
+      -330px + 100vw / 2
+    ); /*This number is distance from edge of screen to half of chosen minus new half * -1*/
+  }
+}
