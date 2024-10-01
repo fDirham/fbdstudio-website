@@ -1,0 +1,25 @@
+.controls__container {
+  display: flex;
+}
+
+.controls__container button img {
+  width: 20px;
+  height: 20px;
+}
+
+.scrollWheel__container {
+  height: 42px;
+  overflow-x: hidden;
+  z-index: -1;
+  margin: 0 24px;
+}
+
+.scrollWheel__wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0;
+  overflow: visible;
+  margin-left: 5px;
+}
