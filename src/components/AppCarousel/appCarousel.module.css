@@ -45,7 +45,7 @@ MARK: Scroll wheel
   height: 42px;
   overflow-x: hidden;
   z-index: -1;
-  margin: 0 12px;
+  margin: 0 24px;
 }
 
 .scrollWheel__wrapper {

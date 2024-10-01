@@ -233,9 +233,9 @@ function ScrollWheelControls(props: {
   const NUM_BLOCKS = 7;
   const BLOCK_COLOR = "#909090";
   const BLOCK_BIG_COLOR = "#565656";
-  const BLOCK_MED_SCALE = 1.2;
-  const BLOCK_BIG_SCALE = 1.4;
-  const BLOCK_MARGIN = 10;
+  const BLOCK_MED_SCALE = 1.3;
+  const BLOCK_BIG_SCALE = 1.6;
+  const BLOCK_MARGIN = 18;
   const BLOCK_WIDTH = 5;
 
   const isFirstIndex = chosenAppIndex == 0;
@@ -399,7 +399,7 @@ function ScrollWheelControls(props: {
             height: 21,
             borderRadius: 12,
             backgroundColor: BLOCK_COLOR,
-            marginRight: BLOCK_MARGIN,
+            marginRight: i == NUM_BLOCKS - 1 ? 0 : BLOCK_MARGIN,
             opacity: i == 0 || i == NUM_BLOCKS - 1 ? 0 : 1,
           }}
         />
