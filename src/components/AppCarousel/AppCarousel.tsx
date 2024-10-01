@@ -94,12 +94,13 @@ export default function AppCarousel() {
         chosenAppIndex={chosenAppIndex}
         isDirectionRight={autoScrollRight}
       />
-      {/* <ScrollWheelControls
-        leftmostAppIndex={leftmostAppIndex}
-        numApps={srcList.length}
+      <ScrollWheelControls
+        appInfoArr={appInfoArr}
+        chosenAppIndex={chosenAppIndex}
+        isDirectionRight={autoScrollRight}
         onBack={handleBack}
         onNext={handleNext}
-      /> */}
+      />
     </div>
   );
 }
@@ -206,100 +207,174 @@ function AppIconCarousel(props: {
  * MARK: Scroll wheel controls
  */
 function ScrollWheelControls(props: {
-  leftmostAppIndex: number;
-  numApps: number;
+  chosenAppIndex: number;
+  appInfoArr: AppInfo[];
+  isDirectionRight: boolean;
   onNext: () => void;
   onBack: () => void;
 }) {
-  const { leftmostAppIndex, numApps, onNext, onBack } = props;
-  const numBlocks = numApps + 2;
+  const { chosenAppIndex, appInfoArr, isDirectionRight, onNext, onBack } =
+    props;
 
+  const NUM_BLOCKS = 7;
   const BLOCK_COLOR = "#909090";
   const BLOCK_BIG_COLOR = "#565656";
   const BLOCK_MED_SCALE = 1.2;
   const BLOCK_BIG_SCALE = 1.4;
   const BLOCK_MARGIN = 10;
   const BLOCK_WIDTH = 5;
-  const NUM_TO_SHOW = 5;
-  const WRAPPER_MARGIN_LEFT =
-    5 + (numBlocks - NUM_TO_SHOW) * (BLOCK_MARGIN + BLOCK_WIDTH);
 
   const [wheelScope, wheelAnimate] = useAnimate();
 
   useEffect(() => {
-    var showDuration = 1;
-    if (leftmostAppIndex == 0) {
-      wheelAnimate("div", { x: 0 }, { duration: 0 });
-      showDuration = 0;
+    if (isDirectionRight) {
+      moveRight();
     } else {
-      const moveSpeed = -(BLOCK_MARGIN + BLOCK_WIDTH);
-      wheelAnimate(
-        "div",
-        {
-          x: moveSpeed * leftmostAppIndex,
-        },
-        { ease: "easeInOut", duration: 1 }
-      );
+      moveLeft();
     }
+  }, [chosenAppIndex]);
 
-    const startShowIdx = leftmostAppIndex;
-    const endShowIdx = leftmostAppIndex + NUM_TO_SHOW;
-
-    const indicesToShow = [];
-    const indicesToHide = [];
-
-    for (let i = 0; i < numBlocks; i++) {
-      if (i < endShowIdx && i >= startShowIdx) {
-        indicesToShow.push(i);
-      } else {
-        indicesToHide.push(i);
-      }
-    }
-
-    indicesToShow.forEach((idx) => {
-      wheelAnimate(
-        `div:nth-child(${idx + 1})`,
-        {
-          opacity: 1,
-        },
-        { duration: showDuration }
-      );
-    });
-
-    indicesToHide.forEach((idx) => {
-      wheelAnimate(
-        `div:nth-child(${idx + 1})`,
-        {
-          opacity: 0,
-        },
-        { duration: showDuration }
-      );
-    });
-
-    // Make 1 of the ones big
-    const bigIdx = leftmostAppIndex + Math.floor(NUM_TO_SHOW / 2);
+  function resetBlocks() {
+    // Hide
     wheelAnimate(
-      `div:nth-child(${bigIdx + 1})`,
+      `div:nth-child(${1})`,
+      { opacity: 0, x: 0, scale: 1, backgroundColor: BLOCK_COLOR },
+      { duration: 0 }
+    );
+    wheelAnimate(
+      `div:nth-child(${7})`,
+      { opacity: 0, x: 0, scale: 1, backgroundColor: BLOCK_COLOR },
+      { duration: 0 }
+    );
+
+    // normal blocks
+    wheelAnimate(
+      `div:nth-child(${2})`,
+      { opacity: 1, x: 0, scale: 1, backgroundColor: BLOCK_COLOR },
+      { duration: 0 }
+    );
+    wheelAnimate(
+      `div:nth-child(${6})`,
+      { opacity: 1, x: 0, scale: 1, backgroundColor: BLOCK_COLOR },
+      { duration: 0 }
+    );
+
+    // Med blocks
+    wheelAnimate(
+      `div:nth-child(${3})`,
       {
+        opacity: 1,
+        x: 0,
+        scale: BLOCK_MED_SCALE,
+        backgroundColor: BLOCK_COLOR,
+      },
+      { duration: 0 }
+    );
+    wheelAnimate(
+      `div:nth-child(${5})`,
+      {
+        opacity: 1,
+        x: 0,
+        scale: BLOCK_MED_SCALE,
+        backgroundColor: BLOCK_COLOR,
+      },
+      { duration: 0 }
+    );
+
+    // Big block
+    wheelAnimate(
+      `div:nth-child(${4})`,
+      {
+        opacity: 1,
+        x: 0,
         scale: BLOCK_BIG_SCALE,
         backgroundColor: BLOCK_BIG_COLOR,
       },
-      { duration: showDuration }
+      { duration: 0 }
+    );
+  }
+
+  function moveRight() {
+    // Show and hide
+    wheelAnimate(
+      `div:nth-child(${NUM_BLOCKS})`,
+      { opacity: 1 },
+      { duration: 0.5 }
+    );
+    wheelAnimate(`div:nth-child(${2})`, { opacity: 0 }, { duration: 0.5 });
+
+    // Enlarge new mediums
+    wheelAnimate(
+      `div:nth-child(${4})`,
+      { scale: BLOCK_MED_SCALE, backgroundColor: BLOCK_COLOR },
+      { duration: 0.5 }
+    );
+    wheelAnimate(
+      `div:nth-child(${6})`,
+      { scale: BLOCK_MED_SCALE },
+      { duration: 0.5 }
     );
 
+    // Enlarge new chosen
     wheelAnimate(
-      `div:not(:nth-child(${bigIdx + 1}))`,
-      {
-        scale: 1,
-        backgroundColor: BLOCK_COLOR,
-      },
-      { duration: showDuration }
+      `div:nth-child(${5})`,
+      { scale: BLOCK_BIG_SCALE, backgroundColor: BLOCK_BIG_COLOR },
+      { duration: 0.5 }
     );
-  }, [leftmostAppIndex]);
+
+    // Scale down old medium
+    wheelAnimate(`div:nth-child(${3})`, { scale: 1 }, { duration: 0.5 });
+
+    const moveSpeed = -(BLOCK_MARGIN + BLOCK_WIDTH);
+    wheelAnimate(
+      "div",
+      { x: moveSpeed },
+      { ease: "easeInOut", duration: 1, onComplete: resetBlocks }
+    );
+  }
+
+  function moveLeft() {
+    // Show and hide
+    wheelAnimate(`div:nth-child(${1})`, { opacity: 1 }, { duration: 0.5 });
+    wheelAnimate(
+      `div:nth-child(${NUM_BLOCKS - 1})`,
+      { opacity: 0 },
+      { duration: 0.5 }
+    );
+
+    // Enlarge new mediums
+    wheelAnimate(
+      `div:nth-child(${2})`,
+      { scale: BLOCK_MED_SCALE },
+      { duration: 0.5 }
+    );
+    wheelAnimate(
+      `div:nth-child(${4})`,
+      { scale: BLOCK_MED_SCALE, backgroundColor: BLOCK_COLOR },
+      { duration: 0.5 }
+    );
+
+    // Enlarge new chosen
+    wheelAnimate(
+      `div:nth-child(${3})`,
+      { scale: BLOCK_BIG_SCALE, backgroundColor: BLOCK_BIG_COLOR },
+      { duration: 0.5 }
+    );
+
+    // Scale down old medium
+    wheelAnimate(`div:nth-child(${5})`, { scale: 1 }, { duration: 0.5 });
+
+    const moveSpeed = BLOCK_MARGIN + BLOCK_WIDTH;
+    wheelAnimate(
+      "div",
+      { x: moveSpeed },
+      { ease: "easeInOut", duration: 1, onComplete: resetBlocks }
+    );
+  }
 
   const renderBlocks = () => {
     const toReturn = [];
-    for (let i = 0; i < numBlocks; i++) {
+    for (let i = 0; i < NUM_BLOCKS; i++) {
       toReturn.push(
         <motion.div
           style={{
@@ -308,6 +383,7 @@ function ScrollWheelControls(props: {
             borderRadius: 12,
             backgroundColor: BLOCK_COLOR,
             marginRight: BLOCK_MARGIN,
+            opacity: i == 0 || i == NUM_BLOCKS - 1 ? 0 : 1,
           }}
         />
       );
@@ -322,13 +398,7 @@ function ScrollWheelControls(props: {
         <img src={leftButtonIcon} alt="" />
       </button>
       <div class={style.scrollWheel__container}>
-        <div
-          class={style.scrollWheel__wrapper}
-          ref={wheelScope}
-          style={{
-            marginLeft: WRAPPER_MARGIN_LEFT,
-          }}
-        >
+        <div class={style.scrollWheel__wrapper} ref={wheelScope}>
           {renderBlocks()}
         </div>
       </div>
