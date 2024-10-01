@@ -1,29 +1,28 @@
 import styles from "./appCarousel.module.css";
-import focusDuckIcon from "../../assets/focus_duck_icon.jpg";
-import duckBlockIcon from "../../assets/duck_block_icon.png";
-import justFocusIcon from "../../assets/just_focus_icon.png";
-import pixelRocketsIcon from "../../assets/pixel_rockets_icon.jpg";
+
 import leftButtonIcon from "../../assets/left_button.png";
 import rightButtonIcon from "../../assets/right_button.png";
 import { motion, useAnimate } from "framer-motion";
-import { useEffect, useRef, useState } from "preact/hooks";
+import {
+  Dispatch,
+  StateUpdater,
+  useEffect,
+  useRef,
+  useState,
+} from "preact/hooks";
+import { AppInfo } from "../../constants";
 
-type AppInfo = {
-  appName: string;
-  iconSrc: string;
+type AppCarouselProps = {
+  chosenAppIndexState: [number, Dispatch<StateUpdater<number>>];
+  appInfoArr: AppInfo[];
 };
 
-export default function AppCarousel() {
+export default function AppCarousel(props: AppCarouselProps) {
   const CAROUSEL_TIMEOUT_MS = 3000;
 
-  const appInfoArr: AppInfo[] = [
-    { appName: "focusDuckIcon", iconSrc: focusDuckIcon },
-    { appName: "duckBlockIcon", iconSrc: duckBlockIcon },
-    { appName: "justFocusIcon", iconSrc: justFocusIcon },
-    { appName: "pixelRocketsIcon", iconSrc: pixelRocketsIcon },
-  ];
+  const { chosenAppIndexState, appInfoArr } = props;
+  const [chosenAppIndex, setChosenAppIndex] = chosenAppIndexState;
 
-  const [chosenAppIndex, setChosenAppIndex] = useState(0);
   const [autoScrollRight, _setAutoScrollRight] = useState(true); // going right means new apps come from right
   const autoScrollRightRef = useRef<boolean>(false);
   function setAutoScrollRight(newVal: boolean) {

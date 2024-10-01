@@ -4,9 +4,11 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import AppCarousel from "../../components/AppCarousel";
 import DetailMode from "../../components/DetailMode";
+import { appInfoArr } from "../../constants";
 
 export function Home() {
   const [isDetailMode, setIsDetailMode] = useState(false);
+  const [chosenAppIndex, setChosenAppIndex] = useState(0);
 
   function handleShowDetail() {
     setIsDetailMode(true);
@@ -20,7 +22,14 @@ export function Home() {
           <h1>We make apps!</h1>
           <h2>-FBDStudio</h2>
         </div>
-        {isDetailMode ? <DetailMode /> : <AppCarousel />}
+        {isDetailMode ? (
+          <DetailMode />
+        ) : (
+          <AppCarousel
+            appInfoArr={appInfoArr}
+            chosenAppIndexState={[chosenAppIndex, setChosenAppIndex]}
+          />
+        )}
 
         <div class={styles.showDetail__container}>
           <button
