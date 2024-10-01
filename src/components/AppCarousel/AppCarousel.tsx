@@ -1,115 +1,40 @@
 import styles from "./appCarousel.module.css";
-import { motion, useAnimate } from "framer-motion";
-import {
-  Dispatch,
-  StateUpdater,
-  useEffect,
-  useRef,
-  useState,
-} from "preact/hooks";
-import { AppInfo } from "../../constants";
+import { motion, useAnimate, useScroll } from "framer-motion";
+import { useEffect, useState } from "preact/hooks";
 import ScrollWheelControls from "../ScrollWheelControls";
+import { AppInfo, UseStateValue } from "../../utilities/customTypes";
 
 type AppCarouselProps = {
-  chosenAppIndexState: [number, Dispatch<StateUpdater<number>>];
+  chosenAppIndexState: UseStateValue<number>;
   appInfoArr: AppInfo[];
+  isScrollDirectionRight: boolean;
+  onBackChosenAppIndex: () => void;
+  onNextChosenAppIndex: () => void;
 };
 
 export default function AppCarousel(props: AppCarouselProps) {
-  const { chosenAppIndexState, appInfoArr } = props;
-  const [chosenAppIndex, setChosenAppIndex] = chosenAppIndexState;
-
-  const [autoScrollRight, _setAutoScrollRight] = useState(true); // going right means new apps come from right
-  const autoScrollRightRef = useRef<boolean>(false);
-  function setAutoScrollRight(newVal: boolean) {
-    autoScrollRightRef.current = newVal;
-    _setAutoScrollRight(newVal);
-  }
-
-  const [manualControl, _setManualControl] = useState(false);
-  const manualControlRef = useRef<boolean>(false);
-  function setManualControl(newVal: boolean) {
-    manualControlRef.current = newVal;
-    _setManualControl(newVal);
-  }
-
-  const intervalRef = useRef<ReturnType<typeof setInterval>>(null);
-
-  const CAROUSEL_TIMEOUT_MS = 3000;
-  useEffect(() => {
-    if (!intervalRef.current) {
-      intervalRef.current = setInterval(() => {
-        if (manualControlRef.current) {
-          return;
-        }
-
-        setChosenAppIndex((curr) => {
-          let newIdx = curr;
-          if (autoScrollRightRef.current) {
-            newIdx += 1;
-          } else {
-            newIdx -= 1;
-          }
-
-          if (newIdx < 0) {
-            newIdx = 1;
-            setAutoScrollRight(true);
-          }
-          if (newIdx >= appInfoArr.length) {
-            newIdx = appInfoArr.length - 2;
-            setAutoScrollRight(false);
-          }
-
-          return newIdx;
-        });
-      }, CAROUSEL_TIMEOUT_MS);
-    }
-    return () => {
-      clearInterval(intervalRef.current);
-    };
-  }, []);
-
-  function handleNext() {
-    if (!manualControl) {
-      setManualControl(true);
-    }
-    setAutoScrollRight(true);
-    setChosenAppIndex((e) => {
-      let newVal = e + 1;
-      if (newVal < appInfoArr.length) {
-        return newVal;
-      }
-      return e;
-    });
-  }
-
-  function handleBack() {
-    if (!manualControl) {
-      setManualControl(true);
-    }
-    setAutoScrollRight(false);
-    setChosenAppIndex((e) => {
-      let newVal = e - 1;
-      if (newVal > -1) {
-        return newVal;
-      }
-      return e;
-    });
-  }
+  const {
+    chosenAppIndexState,
+    appInfoArr,
+    isScrollDirectionRight,
+    onBackChosenAppIndex,
+    onNextChosenAppIndex,
+  } = props;
+  const [chosenAppIndex] = chosenAppIndexState;
 
   return (
     <div class={styles.componentContainer}>
       <AppIconCarousel
         appInfoArr={appInfoArr}
         chosenAppIndex={chosenAppIndex}
-        isDirectionRight={autoScrollRight}
+        isDirectionRight={isScrollDirectionRight}
       />
       <ScrollWheelControls
         appInfoArr={appInfoArr}
         chosenAppIndex={chosenAppIndex}
-        isDirectionRight={autoScrollRight}
-        onBack={handleBack}
-        onNext={handleNext}
+        isDirectionRight={isScrollDirectionRight}
+        onBack={onBackChosenAppIndex}
+        onNext={onNextChosenAppIndex}
       />
     </div>
   );
@@ -127,13 +52,20 @@ function AppIconCarousel(props: {
   let leftmostAppIndex = chosenAppIndex - 1;
   let rightmostAppIndex = chosenAppIndex + 1;
   const [scope, animate] = useAnimate();
+  const [canAnimate, setCanAnimate] = useState(false);
 
   const IMG_SIZE = 180;
   const IMG_BIG_SCALE = 1.2;
   const IMG_MARGIN = 60;
 
   useEffect(() => {
-    var scaleDuration = 0.5;
+    let effectDuration = 0.5;
+    let moveDuration = 1;
+
+    if (!canAnimate) {
+      effectDuration = 0;
+      moveDuration = 0;
+    }
 
     // Move
     const moveSpeed = -(IMG_SIZE + IMG_MARGIN);
@@ -141,8 +73,9 @@ function AppIconCarousel(props: {
       `img`,
       {
         x: moveSpeed * leftmostAppIndex,
+        opacity: 1,
       },
-      { ease: "easeInOut", duration: 1 }
+      { ease: "easeInOut", duration: moveDuration }
     );
 
     // Chosen lift up
@@ -152,7 +85,7 @@ function AppIconCarousel(props: {
         scale: 1,
         marginBottom: 0,
       },
-      { duration: scaleDuration }
+      { duration: effectDuration }
     );
 
     animate(
@@ -161,7 +94,7 @@ function AppIconCarousel(props: {
         scale: IMG_BIG_SCALE,
         marginBottom: 100,
       },
-      { duration: scaleDuration }
+      { duration: effectDuration }
     );
 
     // Hide outgoing
@@ -178,7 +111,7 @@ function AppIconCarousel(props: {
         {
           opacity: 0,
         },
-        { duration: scaleDuration }
+        { duration: effectDuration }
       );
     }
 
@@ -187,9 +120,13 @@ function AppIconCarousel(props: {
       {
         opacity: 1,
       },
-      { duration: scaleDuration }
+      { duration: effectDuration }
     );
   }, [chosenAppIndex]);
+
+  useEffect(() => {
+    setCanAnimate(true);
+  }, []);
 
   return (
     <div class={styles.icons__container}>
@@ -204,6 +141,7 @@ function AppIconCarousel(props: {
                 width: IMG_SIZE,
                 height: IMG_SIZE,
                 marginRight: IMG_MARGIN,
+                opacity: 0,
               }}
             ></motion.img>
           );

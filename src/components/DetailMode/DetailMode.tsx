@@ -1,8 +1,8 @@
 import { Dispatch, StateUpdater } from "preact/hooks";
 import styles from "./DetailMode.module.css";
-import { AppInfo } from "../../constants";
 import { motion } from "framer-motion";
 import ScrollWheelControls from "../ScrollWheelControls";
+import { AppInfo } from "../../utilities/customTypes";
 
 type DetailModeProps = {
   chosenAppIndexState: [number, Dispatch<StateUpdater<number>>];

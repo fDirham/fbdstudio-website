@@ -1,9 +1,9 @@
 import { useAnimate, motion } from "framer-motion";
-import { AppInfo } from "../../constants";
 import styles from "./ScrollWheelControls.module.css";
 import { useEffect, useState } from "preact/hooks";
 import leftButtonIcon from "../../assets/left_button.png";
 import rightButtonIcon from "../../assets/right_button.png";
+import { AppInfo } from "../../utilities/customTypes";
 
 type ScrollWheelControlsProps = {
   chosenAppIndex: number;

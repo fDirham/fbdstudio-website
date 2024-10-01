@@ -1,14 +1,29 @@
-import { useState } from "preact/hooks";
 import styles from "./HomeView.module.css";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import AppCarousel from "../../components/AppCarousel";
 import DetailMode from "../../components/DetailMode";
-import { appInfoArr } from "../../constants";
+import { AppInfo, UseStateValue } from "../../utilities/customTypes";
 
-export default function HomeView() {
-  const [isDetailMode, setIsDetailMode] = useState(true);
-  const [chosenAppIndex, setChosenAppIndex] = useState(0);
+type HomeViewProps = {
+  isDetailModeState: UseStateValue<boolean>;
+  chosenAppIndexState: UseStateValue<number>;
+  appInfoArr: AppInfo[];
+  isScrollDirectionRight: boolean;
+  onBackChosenAppIndex: () => void;
+  onNextChosenAppIndex: () => void;
+};
+
+export default function HomeView(props: HomeViewProps) {
+  const {
+    chosenAppIndexState,
+    isDetailModeState,
+    appInfoArr,
+    isScrollDirectionRight,
+    onBackChosenAppIndex,
+    onNextChosenAppIndex,
+  } = props;
+  const [isDetailMode, setIsDetailMode] = isDetailModeState;
 
   function toggleDetailMode() {
     setIsDetailMode((curr) => !curr);
@@ -25,12 +40,15 @@ export default function HomeView() {
         {isDetailMode ? (
           <DetailMode
             appInfoArr={appInfoArr}
-            chosenAppIndexState={[chosenAppIndex, setChosenAppIndex]}
+            chosenAppIndexState={chosenAppIndexState}
           />
         ) : (
           <AppCarousel
             appInfoArr={appInfoArr}
-            chosenAppIndexState={[chosenAppIndex, setChosenAppIndex]}
+            chosenAppIndexState={chosenAppIndexState}
+            isScrollDirectionRight={isScrollDirectionRight}
+            onBackChosenAppIndex={onBackChosenAppIndex}
+            onNextChosenAppIndex={onNextChosenAppIndex}
           />
         )}
 
