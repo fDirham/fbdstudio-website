@@ -24,7 +24,7 @@
   background-color: #d9d9d9;
 }
 
-.rightSide {
+.appInfo__container {
   width: 45%;
   display: flex;
   flex-direction: column;
@@ -32,4 +32,32 @@
   justify-content: flex-start;
   height: 100%;
   padding-right: 120px;
+}
+
+.appInfo__container h2 {
+  font-weight: 600;
+  font-size: 38px;
+}
+
+.appInfo__description {
+}
+
+.appLinks__container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  gap: 16px;
+}
+
+.appInfoLink--plain {
+  text-decoration: underline;
+}
+
+.appInfoLink--iosAppStore img {
+  height: 40px;
+}
+
+.appInfoLink--macAppStore img {
+  height: 40px;
 }

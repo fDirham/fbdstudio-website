@@ -1,9 +1,11 @@
-import { Dispatch, StateUpdater } from "preact/hooks";
+import { Dispatch, StateUpdater, useEffect, useState } from "preact/hooks";
 import styles from "./DetailMode.module.css";
 import { motion } from "framer-motion";
 import ScrollWheelControls from "../ScrollWheelControls";
-import { AppInfo } from "../../utilities/customTypes";
+import { AppInfo, AppInfoLink, AppInfoType } from "../../utilities/customTypes";
 import SingleIconCarousel from "../SingleIconCarousel";
+import downloadAppStoreIosIcon from "../../assets/download_app_store_ios.png";
+import downloadAppStoreMacIcon from "../../assets/download_app_store_mac.png";
 
 type DetailModeProps = {
   chosenAppIndexState: [number, Dispatch<StateUpdater<number>>];
@@ -21,11 +23,23 @@ export default function DetailMode(props: DetailModeProps) {
     onNextChosenAppIndex,
     isScrollDirectionRight,
   } = props;
-  const [chosenAppIndex, setChosenAppIndex] = chosenAppIndexState;
+  const [chosenAppIndex] = chosenAppIndexState;
   const chosenApp: AppInfo = appInfoArr[chosenAppIndex];
+  const [currDisplayedApp, setCurrDisplayedApp] = useState<AppInfo>(chosenApp);
 
-  const IMG_SIZE = 320;
-  const IMG_MARGIN = 60;
+  const renderDescription = (desc: string) => {
+    const toReturn = [];
+    desc.split("\n").forEach((substr) => {
+      toReturn.push(<p>{substr}</p>);
+      toReturn.push(<br />);
+    });
+    return toReturn;
+  };
+
+  useEffect(() => {
+    // TODO: Animate
+    setCurrDisplayedApp(chosenApp);
+  }, [chosenAppIndex]);
 
   return (
     <div class={styles.componentContainer}>
@@ -44,9 +58,64 @@ export default function DetailMode(props: DetailModeProps) {
         />
       </div>
       <div class={styles.divider}></div>
-      <div class={styles.rightSide}>
-        <h2>{chosenApp.appName}</h2>
+      <div class={styles.appInfo__container}>
+        <h2>{currDisplayedApp.appName}</h2>
+        {!!currDisplayedApp.description && (
+          <div class={styles.appInfo__description}>
+            {renderDescription(currDisplayedApp.description)}
+          </div>
+        )}
+        {!!currDisplayedApp.links && !!currDisplayedApp.links.length && (
+          <AppLinks appLinks={currDisplayedApp.links} />
+        )}
       </div>
+    </div>
+  );
+}
+
+function AppLinks({ appLinks }: { appLinks: AppInfoLink[] }) {
+  const renderLink = (appLink: AppInfoLink) => {
+    if (appLink.type == AppInfoType.EXTERNAL_LINK) {
+      return (
+        <a
+          class={styles[`appInfoLink--plain`]}
+          href={appLink.baseUrl}
+          target="_blank"
+        >
+          {appLink.label ?? "Link"}
+        </a>
+      );
+    }
+    if (appLink.type == AppInfoType.IOS_APP_STORE) {
+      return (
+        <a
+          class={styles[`appInfoLink--iosAppStore`]}
+          href={appLink.baseUrl}
+          target="_blank"
+        >
+          <img src={downloadAppStoreIosIcon} alt="" />
+        </a>
+      );
+    }
+    if (appLink.type == AppInfoType.MAC_APP_STORE) {
+      return (
+        <a
+          class={styles[`appInfoLink--macAppStore`]}
+          href={appLink.baseUrl}
+          target="_blank"
+        >
+          <img src={downloadAppStoreMacIcon} alt="" />
+        </a>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <div class={styles.appLinks__container}>
+      {appLinks.map((appLink) => {
+        return renderLink(appLink);
+      })}
     </div>
   );
 }
