@@ -7,7 +7,7 @@
   width: calc(100vw - 30px);
 }
 
-.leftSide {
+.appIcon__container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,9 +37,7 @@
 .appInfo__container h2 {
   font-weight: 600;
   font-size: 38px;
-}
-
-.appInfo__description {
+  margin-bottom: 12px;
 }
 
 .appLinks__container {
@@ -48,6 +46,7 @@
   width: 100%;
   align-items: center;
   gap: 16px;
+  flex-wrap: wrap;
 }
 
 .appInfoLink--plain {
@@ -60,4 +59,46 @@
 
 .appInfoLink--macAppStore img {
   height: 40px;
+}
+
+@media screen and (max-width: 1255px) {
+  .appInfo__container {
+    padding-right: 20px;
+  }
+  .appIcon__container {
+    padding-left: 20px;
+  }
+}
+
+@media screen and (max-width: 780px) {
+  .appIcon__container {
+    padding-left: 00px;
+    width: 100%;
+  }
+
+  .appInfo__container {
+    padding-right: 0px;
+    width: 100%;
+    padding-bottom: 100px;
+    margin-top: 40px;
+  }
+
+  .appInfo__container h2 {
+    font-weight: 600;
+    font-size: 38px;
+  }
+
+  .componentContainer {
+    flex-direction: column;
+    justify-content: flex-start;
+    height: fit-content;
+    width: calc(100vw - 50px);
+  }
+
+  .appLinks__container {
+    margin-top: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
 }

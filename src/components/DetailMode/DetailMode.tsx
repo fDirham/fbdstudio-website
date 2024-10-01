@@ -31,10 +31,13 @@ export default function DetailMode(props: DetailModeProps) {
 
   const renderDescription = (desc: string) => {
     const toReturn = [];
-    desc.split("\n").forEach((substr) => {
-      toReturn.push(<p>{substr}</p>);
-      toReturn.push(<br />);
-    });
+    desc
+      .trim()
+      .split("\n")
+      .forEach((substr) => {
+        toReturn.push(<p>{substr}</p>);
+        toReturn.push(<br />);
+      });
     return toReturn;
   };
 
@@ -67,7 +70,7 @@ export default function DetailMode(props: DetailModeProps) {
 
   return (
     <div class={styles.componentContainer}>
-      <div class={styles.leftSide}>
+      <div class={styles.appIcon__container}>
         <SingleIconCarousel
           chosenAppIndexState={chosenAppIndexState}
           appInfoArr={appInfoArr}
