@@ -31,13 +31,22 @@ export default function AppCarousel() {
     _setAutoScrollRight(newVal);
   }
 
-  const [manualControl, setManualControl] = useState(false);
+  const [manualControl, _setManualControl] = useState(false);
+  const manualControlRef = useRef<boolean>(false);
+  function setManualControl(newVal: boolean) {
+    manualControlRef.current = newVal;
+    _setManualControl(newVal);
+  }
 
   const intervalRef = useRef<ReturnType<typeof setInterval>>(null);
 
   useEffect(() => {
     if (!intervalRef.current) {
       intervalRef.current = setInterval(() => {
+        if (manualControlRef.current) {
+          return;
+        }
+
         setChosenAppIndex((curr) => {
           let newIdx = curr;
           if (autoScrollRightRef.current) {
@@ -65,26 +74,31 @@ export default function AppCarousel() {
   }, []);
 
   function handleNext() {
-    // if (!manualControl) {
-    //   setManualControl(true);
-    // }
-    // setLeftmostAppIndex((e) => {
-    //   let newVal = e + 1;
-    //   return newVal;
-    // });
+    if (!manualControl) {
+      setManualControl(true);
+    }
+    setAutoScrollRight(true);
+    setChosenAppIndex((e) => {
+      let newVal = e + 1;
+      if (newVal < appInfoArr.length) {
+        return newVal;
+      }
+      return e;
+    });
   }
 
   function handleBack() {
-    // if (!manualControl) {
-    //   setManualControl(true);
-    // }
-    // setLeftmostAppIndex((e) => {
-    //   let newVal = e - 1;
-    //   if (newVal < 0) {
-    //     newVal = halfwayIndex - 1;
-    //   }
-    //   return newVal;
-    // });
+    if (!manualControl) {
+      setManualControl(true);
+    }
+    setAutoScrollRight(false);
+    setChosenAppIndex((e) => {
+      let newVal = e - 1;
+      if (newVal > -1) {
+        return newVal;
+      }
+      return e;
+    });
   }
 
   return (
@@ -223,6 +237,9 @@ function ScrollWheelControls(props: {
   const BLOCK_BIG_SCALE = 1.4;
   const BLOCK_MARGIN = 10;
   const BLOCK_WIDTH = 5;
+
+  const isFirstIndex = chosenAppIndex == 0;
+  const isLastIndex = chosenAppIndex == appInfoArr.length;
 
   const [wheelScope, wheelAnimate] = useAnimate();
 
@@ -394,7 +411,7 @@ function ScrollWheelControls(props: {
 
   return (
     <div class={style.controls__container}>
-      <button onClick={onBack}>
+      <button onClick={onBack} disabled={isFirstIndex}>
         <img src={leftButtonIcon} alt="" />
       </button>
       <div class={style.scrollWheel__container}>
@@ -402,7 +419,7 @@ function ScrollWheelControls(props: {
           {renderBlocks()}
         </div>
       </div>
-      <button onClick={onNext}>
+      <button onClick={onNext} disabled={isLastIndex}>
         <img src={rightButtonIcon} alt="" />
       </button>
     </div>
