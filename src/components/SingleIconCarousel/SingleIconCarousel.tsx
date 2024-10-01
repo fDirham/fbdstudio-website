@@ -18,10 +18,19 @@ export default function SingleIconCarousel({
   const chosenApp = appInfoArr[chosenAppIndex];
   const [currentSrc, setCurrentSrc] = useState(chosenApp.iconSrc);
   const [scope, animate] = useAnimate();
+  const [canAnimate, setCanAnimate] = useState(false);
 
   useEffect(() => {
+    if (!canAnimate) {
+      return;
+    }
+
     transitionToNewImage();
   }, [chosenAppIndex]);
+
+  useEffect(() => {
+    setCanAnimate(true);
+  }, []);
 
   function transitionToNewImage() {
     const newSrc = appInfoArr[chosenAppIndex].iconSrc;
