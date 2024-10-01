@@ -28,7 +28,7 @@ function Header(props: HeaderProps) {
 function DesktopHeader() {
   return (
     <div class={styles["navContent--desktop"]}>
-      <a href="/" class={styles.navButton}>
+      <a href="/" class={styles.navLink}>
         hire us
       </a>
       <a href="/" class={styles.navLink}>
@@ -70,12 +70,14 @@ function MobileHeader({
           <img src={isOpen ? closeIcon : hamburgerIcon} alt="" />
           {!isOpen && <p>menu</p>}
         </button>
-        <button
-          onClick={onShowDetailToggle}
-          class={styles.mobileShowDetailButton}
-        >
-          {isDetailMode ? "Hide detail" : "Show detail"}
-        </button>
+        {!isOpen && (
+          <button
+            onClick={onShowDetailToggle}
+            class={styles.mobileShowDetailButton}
+          >
+            {isDetailMode ? "Hide detail" : "Show detail"}
+          </button>
+        )}
       </div>
       {isOpen && (
         <div class={styles.mobileMenuPopupContainer}>

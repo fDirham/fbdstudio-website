@@ -29,6 +29,7 @@ export default function ScrollWheelControls(props: ScrollWheelControlsProps) {
   const isLastIndex = chosenAppIndex == appInfoArr.length - 1;
 
   const [wheelScope, wheelAnimate] = useAnimate();
+  const [controlScope, controlAnimate] = useAnimate();
   const [isAnimating, setIsAnimating] = useState(false);
   const [canAnimate, setCanAnimate] = useState(false);
 
@@ -39,6 +40,7 @@ export default function ScrollWheelControls(props: ScrollWheelControlsProps) {
     }
 
     setIsAnimating(true);
+
     if (isDirectionRight) {
       moveRight();
     } else {
@@ -49,6 +51,27 @@ export default function ScrollWheelControls(props: ScrollWheelControlsProps) {
   useEffect(() => {
     setCanAnimate(true);
   }, []);
+
+  useEffect(() => {
+    animateControls();
+  }, [isAnimating]);
+
+  function animateControls() {
+    let hideBack = isFirstIndex || isAnimating;
+    let hideNext = isLastIndex || isAnimating;
+
+    if (hideBack) {
+      controlAnimate("button:first-child", { opacity: 0.5 }, { duration: 0.5 });
+    } else {
+      controlAnimate("button:first-child", { opacity: 1 }, { duration: 0.5 });
+    }
+
+    if (hideNext) {
+      controlAnimate("button:last-child", { opacity: 0.5 }, { duration: 0.5 });
+    } else {
+      controlAnimate("button:last-child", { opacity: 1 }, { duration: 0.5 });
+    }
+  }
 
   function resetBlocks() {
     // Hide
@@ -223,16 +246,13 @@ export default function ScrollWheelControls(props: ScrollWheelControlsProps) {
   };
 
   return (
-    <div class={styles.controls__container}>
+    <div class={styles.controls__container} ref={controlScope}>
       <button
         onClick={() => {
           setIsAnimating(true);
           onBack();
         }}
         disabled={isFirstIndex || isAnimating}
-        style={{
-          opacity: isFirstIndex || isAnimating ? 0 : 1,
-        }}
       >
         <img src={leftButtonIcon} alt="" />
       </button>
@@ -247,9 +267,6 @@ export default function ScrollWheelControls(props: ScrollWheelControlsProps) {
           onNext();
         }}
         disabled={isLastIndex || isAnimating}
-        style={{
-          opacity: isLastIndex || isAnimating ? 0 : 1,
-        }}
       >
         <img src={rightButtonIcon} alt="" />
       </button>

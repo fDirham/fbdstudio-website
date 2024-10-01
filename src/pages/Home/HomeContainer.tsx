@@ -91,12 +91,6 @@ export default function HomeContainer() {
     });
   }
 
-  useEffect(() => {
-    if (isDetailMode) {
-      setManualControl(true);
-    }
-  }, [isDetailMode]);
-
   return (
     <HomeView
       isDetailModeState={[isDetailMode, setIsDetailMode]}
