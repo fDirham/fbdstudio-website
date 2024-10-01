@@ -1,7 +1,7 @@
 import { render } from "preact";
 import { LocationProvider, Router, Route } from "preact-iso";
 
-import { Home } from "./pages/Home/index.jsx";
+import Home from "./pages/Home";
 import { NotFound } from "./pages/_404.jsx";
 import "./style.css";
 
