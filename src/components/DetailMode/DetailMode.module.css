@@ -72,7 +72,7 @@
 
 @media screen and (max-width: 780px) {
   .appIcon__container {
-    padding-left: 00px;
+    padding-left: 0px;
     width: 100%;
   }
 
@@ -92,7 +92,7 @@
     flex-direction: column;
     justify-content: flex-start;
     height: fit-content;
-    width: calc(100vw - 50px);
+    width: calc(100vw - 60px);
   }
 
   .appLinks__container {

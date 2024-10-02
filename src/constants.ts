@@ -10,6 +10,7 @@ export const downloadButtonIosAppStoreSrc =
 export const appInfoArr: AppInfo[] = [
   {
     appName: "Just Focus",
+    tagline: "A MacOS productivity timer",
     iconSrc: S3_ROOT_URL + "fbdstudio/just_focus_icon.png",
     description: `
     Just Focus is a MacOS app that helps you focus. It is a simple, minimalistic timer that lives in your Mac's status bar, fine tuned for the pomodoro technique. You can customize it's functionality, appearance, and even it's alarm sounds.
@@ -24,6 +25,7 @@ export const appInfoArr: AppInfo[] = [
   },
   {
     appName: "Focus Duck",
+    tagline: "A cute duck themed iOS productivity app",
     iconSrc: S3_ROOT_URL + "fbdstudio/focus_duck_icon.jpg",
     description: `
     Focus Duck is a pomodoro focus timer that helps you work! Its duck themed art makes the app a fun and cute companion to take to your work.
@@ -39,6 +41,7 @@ export const appInfoArr: AppInfo[] = [
   },
   {
     appName: "Pixel Rockets",
+    tagline: "A fun asteroid dodging game with ROCKETS!",
     iconSrc: S3_ROOT_URL + "fbdstudio/pixel_rockets_icon.jpg",
     description: `
 Dodge asteroids and collect gold in this fun endless runner of a game. Featuring custom pixel art and simple controls.
@@ -53,6 +56,7 @@ Dodge asteroids and collect gold in this fun endless runner of a game. Featuring
   },
   {
     appName: "Duck Block",
+    tagline: "An app blocker to reduce screen time.",
     iconSrc: S3_ROOT_URL + "fbdstudio/duck_block_icon.png",
     description: `
     Duck Block helps you stay off social media and other addicting apps or websites. Simply choose apps you want blocked and you will no longer be able to access them. Key features include: 

@@ -16,7 +16,11 @@ function Header(props: HeaderProps) {
   return (
     <header class={styles.headerContainer}>
       <nav class={styles.navContainer}>
-        <DesktopHeader />
+        <DesktopHeader
+          onShowDetailToggle={props.onShowDetailToggle}
+          isDetailMode={props.isDetailMode}
+          hideDetailToggle={props.hideDetailToggle}
+        />
         <MobileHeader
           onShowDetailToggle={props.onShowDetailToggle}
           isDetailMode={props.isDetailMode}
@@ -27,21 +31,42 @@ function Header(props: HeaderProps) {
   );
 }
 
-function DesktopHeader() {
+function DesktopHeader({
+  onShowDetailToggle,
+  isDetailMode,
+  hideDetailToggle,
+}: {
+  onShowDetailToggle: () => void;
+  isDetailMode: boolean;
+  hideDetailToggle?: boolean;
+}) {
   return (
     <div class={styles["navContent--desktop"]}>
-      <a
-        href="mailto:team@fbdstudio.com?subject=We would like to hire your team"
-        class={styles.navLink}
-      >
-        hire us
-      </a>
-      <a href="/about" class={styles.navLink}>
-        about
-      </a>
-      <a href="mailto:team@fbdstudio.com" class={styles.navLink}>
-        contact
-      </a>
+      <div class={styles["navContent__linksContainer--desktop"]}>
+        <a class={styles.navTitle} href="/">
+          FBDstudio
+        </a>
+        <a
+          href="mailto:team@fbdstudio.com?subject=We would like to hire your team"
+          class={styles.navLink}
+        >
+          hire us
+        </a>
+        <a href="/about" class={styles.navLink}>
+          about
+        </a>
+        <a href="mailto:team@fbdstudio.com" class={styles.navLink}>
+          contact
+        </a>
+      </div>
+      {!hideDetailToggle && (
+        <button
+          class={styles["showDetailButton--desktop"]}
+          onClick={onShowDetailToggle}
+        >
+          {isDetailMode ? "Hide detail" : "Show detail"}
+        </button>
+      )}
     </div>
   );
 }
@@ -75,12 +100,12 @@ function MobileHeader({
           class={styles.mobileMenuButton}
         >
           <img src={isOpen ? closeIcon : hamburgerIcon} alt="" />
-          {!isOpen && <p>menu</p>}
+          <p>FBDstudio</p>
         </button>
         {!isOpen && !hideDetailToggle && (
           <button
             onClick={onShowDetailToggle}
-            class={styles.mobileShowDetailButton}
+            class={styles["showDetailButton--mobile"]}
           >
             {isDetailMode ? "Hide detail" : "Show detail"}
           </button>
@@ -96,6 +121,9 @@ function MobileHeader({
           </a>
           <a href="mailto:team@fbdstudio.com" class={styles.navLink}>
             contact
+          </a>
+          <a href="/" class={styles.navLink}>
+            home
           </a>
         </div>
       )}

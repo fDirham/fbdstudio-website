@@ -6,6 +6,7 @@ export type AppInfo = {
   iconSrc: string;
   description?: string;
   links?: AppInfoLink[];
+  tagline: string;
 };
 
 export enum AppInfoType {

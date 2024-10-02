@@ -26,8 +26,12 @@ export default function HomeView(props: HomeViewProps) {
     onNextChosenAppIndex,
   } = props;
   const [isDetailMode, setIsDetailMode] = isDetailModeState;
+  const [chosenAppIndex] = chosenAppIndexState;
   const [dmScope, dmAnimate] = useAnimate();
   const [canAnimate, setCanAnimate] = useState(false);
+  const chosenApp = appInfoArr[chosenAppIndex];
+  const [subtitleScope, subtitleAnimate] = useAnimate();
+  const [subtitleText, setSubtitleText] = useState(chosenApp.tagline);
 
   useEffect(() => {
     let animDuration = 1;
@@ -71,6 +75,28 @@ export default function HomeView(props: HomeViewProps) {
   }, [isDetailMode]);
 
   useEffect(() => {
+    let animDuration = 1;
+    if (!canAnimate) {
+      animDuration = 0;
+    }
+    subtitleAnimate(
+      subtitleScope.current,
+      { opacity: 0 },
+      {
+        duration: animDuration,
+        onComplete: () => {
+          setSubtitleText(chosenApp.tagline);
+          subtitleAnimate(
+            subtitleScope.current,
+            { opacity: 1 },
+            { duration: animDuration }
+          );
+        },
+      }
+    );
+  }, [chosenAppIndex]);
+
+  useEffect(() => {
     setCanAnimate(true);
   }, []);
 
@@ -96,8 +122,8 @@ export default function HomeView(props: HomeViewProps) {
         </div>
         <div class="homeMode" style={{ display: "none" }}>
           <div class={styles.heroTextContainer}>
-            <h1>We make apps!</h1>
-            <h2>-FBDStudio</h2>
+            <h1>we made this</h1>
+            <h2 ref={subtitleScope}>{subtitleText}</h2>
           </div>
           <AppCarousel
             appInfoArr={appInfoArr}
@@ -106,15 +132,6 @@ export default function HomeView(props: HomeViewProps) {
             onBackChosenAppIndex={onBackChosenAppIndex}
             onNextChosenAppIndex={onNextChosenAppIndex}
           />
-        </div>
-        <div class={styles.showDetail__container}>
-          <button
-            class={styles.showDetail__button}
-            onClick={toggleDetailMode}
-            disabled={false}
-          >
-            {isDetailMode ? "Hide detail" : "Show detail"}
-          </button>
         </div>
       </main>
       <Footer />

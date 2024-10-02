@@ -19,20 +19,42 @@ MARK: Desktop
 .navContent--desktop {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  padding: 0 24px;
+  align-items: center;
+}
+
+.navContent__linksContainer--desktop {
+  display: flex;
+  flex-direction: row;
   margin-right: auto;
   align-items: center;
   gap: 16px;
 
-  padding: 0 24px;
   height: 60px;
 }
 
-.navContent--desktop .navButton {
+.navTitle {
+  font-weight: 600;
+}
+
+.navContent__linksContainer--desktop .navButton {
   color: white;
   background-color: black;
   padding: 4px 12px;
   border-radius: 4px;
   font-weight: 600;
+  font-size: 14px;
+}
+
+.showDetailButton--desktop {
+  color: white;
+  background-color: black;
+  padding: 8px 24px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 400;
+  flex-grow: 0;
 }
 
 /* 
@@ -66,6 +88,7 @@ MARK: Mobile
 
 .mobileMenuButton p {
   font-size: 16px;
+  font-weight: 600;
 }
 
 .mobileMenuPopupContainer {
@@ -74,15 +97,19 @@ MARK: Mobile
   height: calc(100vh - 50px);
   padding: 0 18px;
   flex-direction: column;
-  gap: 18px;
 }
 
-.mobileShowDetailButton {
+.mobileMenuPopupContainer a {
+  font-size: 24px;
+  padding: 12px 0;
+}
+
+.showDetailButton--mobile {
   color: white;
   background-color: black;
-  padding: 8px 24px;
+  padding: 8px 12px;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 400;
   flex-grow: 0;
 }
