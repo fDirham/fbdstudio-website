@@ -30,13 +30,13 @@ function Header(props: HeaderProps) {
 function DesktopHeader() {
   return (
     <div class={styles["navContent--desktop"]}>
-      <a href="/" class={styles.navLink}>
+      <a href="mailto:team@fbdstudio.com" class={styles.navLink}>
         hire us
       </a>
       <a href="/about" class={styles.navLink}>
         about
       </a>
-      <a href="/" class={styles.navLink}>
+      <a href="mailto:team@fbdstudio.com" class={styles.navLink}>
         contact
       </a>
     </div>
@@ -85,13 +85,13 @@ function MobileHeader({
       </div>
       {isOpen && (
         <div class={styles.mobileMenuPopupContainer}>
-          <a href="/" class={styles.navLink}>
+          <a href="mailto:team@fbdstudio.com" class={styles.navLink}>
             hire us
           </a>
           <a href="/about" class={styles.navLink}>
             about
           </a>
-          <a href="/" class={styles.navLink}>
+          <a href="mailto:team@fbdstudio.com" class={styles.navLink}>
             contact
           </a>
         </div>
