@@ -30,7 +30,10 @@ function Header(props: HeaderProps) {
 function DesktopHeader() {
   return (
     <div class={styles["navContent--desktop"]}>
-      <a href="mailto:team@fbdstudio.com" class={styles.navLink}>
+      <a
+        href="mailto:team@fbdstudio.com?subject=We would like to hire your team"
+        class={styles.navLink}
+      >
         hire us
       </a>
       <a href="/about" class={styles.navLink}>
