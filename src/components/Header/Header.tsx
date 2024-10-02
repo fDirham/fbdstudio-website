@@ -1,6 +1,5 @@
-import { useLocation } from "preact-iso";
 import styles from "./header.module.css";
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import hamburgerIcon from "../../assets/hamburger_icon.png";
 import closeIcon from "../../assets/close_icon.png";
 
@@ -10,11 +9,35 @@ type HeaderProps = {
   isDetailMode?: boolean;
 };
 
+function useScrollTop() {
+  const [scrollTop, setScrollTop] = useState(0);
+
+  useEffect(() => {
+    document.addEventListener("scroll", onScroll);
+
+    return () => {
+      document.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
+  const onScroll = (e) => {
+    setScrollTop(window.scrollY);
+  };
+
+  return scrollTop;
+}
+
 function Header(props: HeaderProps) {
-  const { url } = useLocation();
+  const scrollTop = useScrollTop();
 
   return (
-    <header class={styles.headerContainer}>
+    <header
+      class={styles.headerContainer}
+      style={{
+        transition: "all 0.3s",
+        backgroundColor: scrollTop > 0 ? "#A4C6C3" : "transparent",
+      }}
+    >
       <nav class={styles.navContainer}>
         <DesktopHeader
           onShowDetailToggle={props.onShowDetailToggle}
