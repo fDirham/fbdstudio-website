@@ -6,7 +6,6 @@
   position: fixed;
   top: 0;
   z-index: 999;
-  background-color: var(--background-color);
 }
 
 .navContainer {
@@ -71,6 +70,7 @@ MARK: Mobile
   padding: 0 24px;
   min-height: 70px;
   max-height: 100vh;
+  background-color: var(--background-color);
 }
 
 .mobileMenuButton {
@@ -94,9 +94,10 @@ MARK: Mobile
 .mobileMenuPopupContainer {
   display: none;
 
-  height: calc(100vh - 50px);
+  height: calc(100vh - 70px);
   padding: 0 18px;
   flex-direction: column;
+  background-color: var(--background-color);
 }
 
 .mobileMenuPopupContainer a {

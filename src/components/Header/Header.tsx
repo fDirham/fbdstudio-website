@@ -35,7 +35,8 @@ function Header(props: HeaderProps) {
       class={styles.headerContainer}
       style={{
         transition: "all 0.3s",
-        backgroundColor: scrollTop > 0 ? "#A4C6C3" : "transparent",
+        borderBottom:
+          scrollTop > 0 ? "2px solid #A4C6C3" : "2px solid transparent",
       }}
     >
       <nav class={styles.navContainer}>
@@ -136,7 +137,10 @@ function MobileHeader({
       </div>
       {isOpen && (
         <div class={styles.mobileMenuPopupContainer}>
-          <a href="mailto:team@fbdstudio.com" class={styles.navLink}>
+          <a
+            href="mailto:team@fbdstudio.com?subject=We would like to hire your team"
+            class={styles.navLink}
+          >
             hire us
           </a>
           <a href="/about" class={styles.navLink}>
