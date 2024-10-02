@@ -112,7 +112,7 @@ function MobileHeader({
     if (newVal) {
       document.body.style.overflowY = "hidden";
     } else {
-      document.body.style.overflowY = "scroll";
+      document.body.style.overflowY = "auto";
     }
   }
 
