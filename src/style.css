@@ -14,8 +14,8 @@
   background-color: #defffd;
 }
 
-body {
-  background-color: var(--background-color);
+html {
+  background-color: #defffd;
 }
 
 * {

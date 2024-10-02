@@ -10,12 +10,7 @@ import HomeView from "./HomeView";
 import { appInfoArr } from "../../constants";
 
 export default function HomeContainer() {
-  const [previousChosenAppIndex, setPreviousChosenAppIndex] = useState(-1);
-  const [chosenAppIndex, _setChosenAppIndex] = useState(0);
-  const setChosenAppIndex = (newVal: StateUpdater<number>) => {
-    setPreviousChosenAppIndex(chosenAppIndex);
-    _setChosenAppIndex(newVal);
-  };
+  const [chosenAppIndex, setChosenAppIndex] = useState(0);
   const [autoScrollRight, _setAutoScrollRight] = useState(true); // going right means new apps come from right
   const autoScrollRightRef = useRef<boolean>(false);
   function setAutoScrollRight(newVal: boolean) {
@@ -69,6 +64,7 @@ export default function HomeContainer() {
     if (!manualControl) {
       setManualControl(true);
     }
+    setAutoScrollRight(true);
     setChosenAppIndex((e) => {
       let newVal = e + 1;
       if (newVal < appInfoArr.length) {
@@ -82,6 +78,7 @@ export default function HomeContainer() {
     if (!manualControl) {
       setManualControl(true);
     }
+    setAutoScrollRight(false);
     setChosenAppIndex((e) => {
       let newVal = e - 1;
       if (newVal > -1) {
@@ -96,7 +93,7 @@ export default function HomeContainer() {
       isDetailModeState={[isDetailMode, setIsDetailMode]}
       chosenAppIndexState={[chosenAppIndex, setChosenAppIndex]}
       appInfoArr={appInfoArr}
-      isScrollDirectionRight={previousChosenAppIndex < chosenAppIndex}
+      isScrollDirectionRight={autoScrollRight}
       onBackChosenAppIndex={handleBackChosenAppIndex}
       onNextChosenAppIndex={handleNextChosenAppIndex}
     />
