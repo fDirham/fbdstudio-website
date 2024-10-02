@@ -30,7 +30,7 @@ export default function HomeView(props: HomeViewProps) {
   const [canAnimate, setCanAnimate] = useState(false);
 
   useEffect(() => {
-    let animDuration = 0.4;
+    let animDuration = 1;
     if (!canAnimate) {
       animDuration = 0;
     }

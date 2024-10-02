@@ -4,8 +4,10 @@ import { motion, useAnimate } from "framer-motion";
 import ScrollWheelControls from "../ScrollWheelControls";
 import { AppInfo, AppInfoLink, AppInfoType } from "../../utilities/customTypes";
 import SingleIconCarousel from "../SingleIconCarousel";
-import downloadAppStoreIosIcon from "../../assets/download_app_store_ios.png";
-import downloadAppStoreMacIcon from "../../assets/download_app_store_mac.png";
+import {
+  downloadButtonIosAppStoreSrc,
+  downloadButtonMacAppStoreSrc,
+} from "../../constants";
 
 type DetailModeProps = {
   chosenAppIndexState: [number, Dispatch<StateUpdater<number>>];
@@ -120,7 +122,7 @@ function AppLinks({ appLinks }: { appLinks: AppInfoLink[] }) {
           href={appLink.baseUrl}
           target="_blank"
         >
-          <img src={downloadAppStoreIosIcon} alt="" />
+          <img src={downloadButtonIosAppStoreSrc} alt="" />
         </a>
       );
     }
@@ -131,7 +133,7 @@ function AppLinks({ appLinks }: { appLinks: AppInfoLink[] }) {
           href={appLink.baseUrl}
           target="_blank"
         >
-          <img src={downloadAppStoreMacIcon} alt="" />
+          <img src={downloadButtonMacAppStoreSrc} alt="" />
         </a>
       );
     }

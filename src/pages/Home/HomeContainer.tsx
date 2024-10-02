@@ -26,7 +26,7 @@ export default function HomeContainer() {
   const [isDetailMode, setIsDetailMode] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval>>(null);
 
-  const CAROUSEL_TIMEOUT_MS = 3000;
+  const CAROUSEL_TIMEOUT_MS = 4000;
   useEffect(() => {
     if (!intervalRef.current) {
       intervalRef.current = setInterval(() => {
@@ -59,6 +59,10 @@ export default function HomeContainer() {
       clearInterval(intervalRef.current);
     };
   }, []);
+
+  useEffect(() => {
+    setManualControl(isDetailMode);
+  }, [isDetailMode]);
 
   function handleNextChosenAppIndex() {
     if (!manualControl) {
