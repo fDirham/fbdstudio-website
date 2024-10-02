@@ -14,6 +14,10 @@
   background-color: #defffd;
 }
 
+body {
+  background-color: var(--background-color);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
