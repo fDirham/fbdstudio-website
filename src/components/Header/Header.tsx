@@ -5,8 +5,9 @@ import hamburgerIcon from "../../assets/hamburger_icon.png";
 import closeIcon from "../../assets/close_icon.png";
 
 type HeaderProps = {
-  onShowDetailToggle: () => void;
-  isDetailMode: boolean;
+  onShowDetailToggle?: () => void;
+  hideDetailToggle?: boolean;
+  isDetailMode?: boolean;
 };
 
 function Header(props: HeaderProps) {
@@ -19,6 +20,7 @@ function Header(props: HeaderProps) {
         <MobileHeader
           onShowDetailToggle={props.onShowDetailToggle}
           isDetailMode={props.isDetailMode}
+          hideDetailToggle={props.hideDetailToggle}
         />
       </nav>
     </header>
@@ -31,7 +33,7 @@ function DesktopHeader() {
       <a href="/" class={styles.navLink}>
         hire us
       </a>
-      <a href="/" class={styles.navLink}>
+      <a href="/about" class={styles.navLink}>
         about
       </a>
       <a href="/" class={styles.navLink}>
@@ -44,9 +46,11 @@ function DesktopHeader() {
 function MobileHeader({
   onShowDetailToggle,
   isDetailMode,
+  hideDetailToggle,
 }: {
   onShowDetailToggle: () => void;
   isDetailMode: boolean;
+  hideDetailToggle?: boolean;
 }) {
   const [isOpen, _setIsOpen] = useState<boolean>(false);
 
@@ -70,7 +74,7 @@ function MobileHeader({
           <img src={isOpen ? closeIcon : hamburgerIcon} alt="" />
           {!isOpen && <p>menu</p>}
         </button>
-        {!isOpen && (
+        {!isOpen && !hideDetailToggle && (
           <button
             onClick={onShowDetailToggle}
             class={styles.mobileShowDetailButton}
@@ -84,7 +88,7 @@ function MobileHeader({
           <a href="/" class={styles.navLink}>
             hire us
           </a>
-          <a href="/" class={styles.navLink}>
+          <a href="/about" class={styles.navLink}>
             about
           </a>
           <a href="/" class={styles.navLink}>

@@ -1,0 +1,29 @@
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+
+  padding-top: 70px;
+}
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mainContainer h1 {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.contentContainer {
+  width: 600px;
+  font-size: 16px;
+}
+
+.contentContainer ul {
+  padding-left: 16px;
+}
