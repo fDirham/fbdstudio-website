@@ -27,52 +27,10 @@ export default function HomeView(props: HomeViewProps) {
   } = props;
   const [isDetailMode, setIsDetailMode] = isDetailModeState;
   const [chosenAppIndex] = chosenAppIndexState;
-  const [dmScope, dmAnimate] = useAnimate();
   const [canAnimate, setCanAnimate] = useState(false);
   const chosenApp = appInfoArr[chosenAppIndex];
   const [subtitleScope, subtitleAnimate] = useAnimate();
   const [subtitleText, setSubtitleText] = useState(chosenApp.tagline);
-
-  useEffect(() => {
-    let animDuration = 1;
-    if (!canAnimate) {
-      animDuration = 0;
-    }
-
-    if (isDetailMode) {
-      dmAnimate(
-        "div.homeMode",
-        { opacity: 0 },
-        {
-          duration: animDuration,
-          onComplete: () => {
-            dmAnimate("div.homeMode", { display: "none" }, { duration: 0 });
-            dmAnimate(
-              "div.detailMode",
-              { opacity: 1, display: "initial" },
-              { duration: animDuration }
-            );
-          },
-        }
-      );
-    } else {
-      dmAnimate(
-        "div.detailMode",
-        { opacity: 0 },
-        {
-          duration: animDuration,
-          onComplete: () => {
-            dmAnimate("div.detailMode", { display: "none" }, { duration: 0 });
-            dmAnimate(
-              "div.homeMode",
-              { opacity: 1, display: "initial" },
-              { duration: animDuration }
-            );
-          },
-        }
-      );
-    }
-  }, [isDetailMode]);
 
   useEffect(() => {
     let animDuration = 1;
@@ -110,8 +68,11 @@ export default function HomeView(props: HomeViewProps) {
         onShowDetailToggle={toggleDetailMode}
         isDetailMode={isDetailMode}
       />
-      <main ref={dmScope}>
-        <div class="detailMode" style={{ display: "none" }}>
+      <main>
+        <div
+          class="detailMode"
+          style={{ display: isDetailMode ? "initial" : "none" }}
+        >
           <DetailMode
             appInfoArr={appInfoArr}
             chosenAppIndexState={chosenAppIndexState}
@@ -120,7 +81,10 @@ export default function HomeView(props: HomeViewProps) {
             onNextChosenAppIndex={onNextChosenAppIndex}
           />
         </div>
-        <div class="homeMode" style={{ display: "none" }}>
+        <div
+          class="homeMode"
+          style={{ display: isDetailMode ? "none" : "initial" }}
+        >
           <div class={styles.heroTextContainer}>
             <h1>we made this</h1>
             <h2 ref={subtitleScope}>{subtitleText}</h2>
