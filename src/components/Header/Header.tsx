@@ -110,11 +110,15 @@ function MobileHeader({
     _setIsOpen(newVal);
 
     if (newVal) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflowY = "hidden";
     } else {
-      document.body.style.overflow = "scroll";
+      document.body.style.overflowY = "scroll";
     }
   }
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, []);
 
   return (
     <>
